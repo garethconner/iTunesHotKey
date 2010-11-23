@@ -1,9 +1,10 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
+  BorderStyle = bsToolWindow
   Caption = 'iTunes Hot Keys'
-  ClientHeight = 58
-  ClientWidth = 230
+  ClientHeight = 56
+  ClientWidth = 229
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
