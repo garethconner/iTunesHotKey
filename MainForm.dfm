@@ -22,24 +22,21 @@ object MainForm: TMainForm
     Top = 9
     Width = 73
     Height = 41
-    Caption = 'Play/Pause'
-    OnClick = BtnPlayClick
+    Action = PlayPauseAction
   end
   object BtnNext: TSpeedButton
     Left = 158
     Top = 8
     Width = 63
     Height = 42
-    Caption = 'Next'
-    OnClick = BtnNextClick
+    Action = SkipFwdAction
   end
   object BtnPrev: TSpeedButton
     Left = 8
     Top = 8
     Width = 65
     Height = 42
-    Caption = 'Previous'
-    OnClick = BtnPrevClick
+    Action = SkipRevAction
   end
   object TrayIcon1: TTrayIcon
     Icon.Data = {
@@ -5075,15 +5072,31 @@ object MainForm: TMainForm
     PopupMenu = PopupMenu1
     Visible = True
     OnClick = TrayIcon1Click
-    Left = 112
-    Top = 32
+    Left = 64
+    Top = 24
   end
   object PopupMenu1: TPopupMenu
-    Left = 152
+    Left = 200
     Top = 24
     object Close1: TMenuItem
       Caption = 'Close'
       OnClick = Close1Click
+    end
+  end
+  object HotKeyActions: TActionList
+    Left = 144
+    Top = 24
+    object PlayPauseAction: TAction
+      Caption = 'Play/Pause'
+      OnExecute = PlayPauseActionExecute
+    end
+    object SkipFwdAction: TAction
+      Caption = 'Fwd'
+      OnExecute = SkipFwdActionExecute
+    end
+    object SkipRevAction: TAction
+      Caption = 'Rev'
+      OnExecute = SkipRevActionExecute
     end
   end
 end

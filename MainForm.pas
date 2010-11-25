@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Buttons, ShellAPI, ExtCtrls, Menus;
+  Dialogs, Buttons, ShellAPI, ExtCtrls, Menus, ActnList;
 
 type
   TMainForm = class(TForm)
@@ -14,15 +14,19 @@ type
     TrayIcon1: TTrayIcon;
     PopupMenu1: TPopupMenu;
     Close1: TMenuItem;
-    procedure BtnNextClick(Sender: TObject);
-    procedure BtnPlayClick(Sender: TObject);
-    procedure BtnPrevClick(Sender: TObject);
+    HotKeyActions: TActionList;
+    PlayPauseAction: TAction;
+    SkipFwdAction: TAction;
+    SkipRevAction: TAction;
     procedure FormCreate(Sender: TObject);
     procedure WMHotKey(var Msg: TWMHotKey); message WM_HOTKEY;
     procedure FormDestroy(Sender: TObject);
     procedure TrayIcon1Click(Sender: TObject);
     procedure Close1Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure PlayPauseActionExecute(Sender: TObject);
+    procedure SkipRevActionExecute(Sender: TObject);
+    procedure SkipFwdActionExecute(Sender: TObject);
   private
     { Private declarations }
     procedure SendKeyToItunes(Key: SmallInt);
@@ -71,6 +75,16 @@ begin
   SendMessage(hwndiTunes, WM_KEYUP, Key, 0);
 end;
 
+procedure TMainForm.SkipFwdActionExecute(Sender: TObject);
+begin
+  SendKeyToItunes(VK_RIGHT);
+end;
+
+procedure TMainForm.SkipRevActionExecute(Sender: TObject);
+begin
+  SendKeyToItunes(VK_LEFT);
+end;
+
 procedure TMainForm.TrayIcon1Click(Sender: TObject);
 begin
   Application.Restore;
@@ -78,19 +92,9 @@ begin
   Self.Show;
 end;
 
-procedure TMainForm.BtnPlayClick(Sender: TObject);
+procedure TMainForm.PlayPauseActionExecute(Sender: TObject);
 begin
   SendKeyToiTunes(VK_SPACE);
-end;
-
-procedure TMainForm.BtnNextClick(Sender: TObject);
-begin
-  SendKeyToItunes(VK_RIGHT);
-end;
-
-procedure TMainForm.BtnPrevClick(Sender: TObject);
-begin
-  SendKeyToItunes(VK_LEFT);
 end;
 
 procedure TMainForm.Close1Click(Sender: TObject);
@@ -101,9 +105,9 @@ end;
 procedure TMainForm.WMHotKey(var Msg: TWMHotKey);
 begin
   case Msg.HotKey of
-    7471 : SendKeyToItunes (VK_LEFT);
-    7472 : SendKeyToItunes(VK_SPACE);
-    7473 : SendKeyToItunes(VK_RIGHT);
+    7471 : Self.SkipRevActionExecute(nil);
+    7472 : Self.PlayPauseActionExecute(nil);
+    7473 : Self.SkipFwdActionExecute(nil);
   end;
 end;
 
